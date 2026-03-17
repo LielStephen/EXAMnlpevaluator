@@ -1,0 +1,8 @@
+streamlit
+torch
+transformers
+pillow
+sentence-transformers
+opencv-python
+numpy
+spacy
