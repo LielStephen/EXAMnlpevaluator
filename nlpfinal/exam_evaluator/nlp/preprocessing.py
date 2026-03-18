@@ -10,7 +10,11 @@ class TextPreprocessor:
         try:
             self.nlp = spacy.load(model)
         except OSError:
-            raise OSError(f"Spacy model '{model}' not found. Run: python -m spacy download {model}")
+            # Hosted deployments are more reliable if we avoid requiring an
+            # extra downloaded spaCy model package.
+            self.nlp = spacy.blank("en")
+            if "sentencizer" not in self.nlp.pipe_names:
+                self.nlp.add_pipe("sentencizer")
 
     def clean_text(self, text: str) -> str:
         """Basic text cleaning."""

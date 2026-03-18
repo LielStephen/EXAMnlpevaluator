@@ -14,6 +14,9 @@ class ImagePreprocessor:
         Convert PIL image to CV2, apply grayscale, denoising, and thresholding,
         then convert back to PIL.
         """
+        if pil_image.mode != "RGB":
+            pil_image = pil_image.convert("RGB")
+
         # Convert PIL to OpenCV format (RGB -> BGR)
         image_cv = cv2.cvtColor(np.array(pil_image), cv2.COLOR_RGB2BGR)
 

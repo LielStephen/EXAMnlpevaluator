@@ -1,10 +1,9 @@
 --extra-index-url https://download.pytorch.org/whl/cpu
-streamlit
-torch
-transformers
-pillow
-sentence-transformers
-opencv-python-headless
-numpy
-spacy
-https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.7.1/en_core_web_sm-3.7.1.tar.gz
+streamlit>=1.33,<2
+torch>=2.2,<3
+transformers>=4.39,<5
+pillow>=10,<12
+sentence-transformers>=2.6,<4
+opencv-python-headless>=4.9,<5
+numpy>=1.26,<3
+spacy>=3.7,<4
