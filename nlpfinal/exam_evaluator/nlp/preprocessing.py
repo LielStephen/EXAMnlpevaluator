@@ -1,4 +1,3 @@
-import spacy
 import re
 
 class TextPreprocessor:
@@ -7,6 +6,7 @@ class TextPreprocessor:
     """
     
     def __init__(self, model: str = "en_core_web_sm"):
+        import spacy
         try:
             self.nlp = spacy.load(model)
         except OSError:

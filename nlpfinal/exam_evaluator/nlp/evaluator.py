@@ -16,8 +16,8 @@ class AutoGrader:
         """
         if not relevant_text.strip():
             return {
-                "score": 0.0,
-                "marks": 0,
+                "similarity_score": 0.0,
+                "marks_awarded": 0,
                 "reason": "No relevant content detected in the answer."
             }
 

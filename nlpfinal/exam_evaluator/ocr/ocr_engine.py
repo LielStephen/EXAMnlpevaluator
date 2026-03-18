@@ -1,5 +1,3 @@
-import torch
-from transformers import TrOCRProcessor, VisionEncoderDecoderModel
 from PIL import Image
 
 class TrOCREngine:
@@ -9,6 +7,9 @@ class TrOCREngine:
     """
     
     def __init__(self, model_name: str = "microsoft/trocr-base-handwritten"):
+        import torch
+        from transformers import TrOCRProcessor, VisionEncoderDecoderModel
+        
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
         print(f"Loading OCR Model on: {self.device}...")
         
