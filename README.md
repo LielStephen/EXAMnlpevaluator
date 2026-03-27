@@ -21,4 +21,4 @@ Use these settings in Streamlit Cloud:
 Notes:
 
 - Models are loaded lazily on the first evaluation instead of during app startup.
-- The app no longer requires downloading the `en_core_web_sm` spaCy package at deploy time.
+- The app uses lightweight built-in sentence splitting, so no extra spaCy model download is required.

@@ -2,19 +2,11 @@ import re
 
 class TextPreprocessor:
     """
-    Handles text cleaning, sentence splitting, and normalization using spaCy.
+    Handles lightweight text cleaning and sentence splitting.
     """
-    
-    def __init__(self, model: str = "en_core_web_sm"):
-        import spacy
-        try:
-            self.nlp = spacy.load(model)
-        except OSError:
-            # Hosted deployments are more reliable if we avoid requiring an
-            # extra downloaded spaCy model package.
-            self.nlp = spacy.blank("en")
-            if "sentencizer" not in self.nlp.pipe_names:
-                self.nlp.add_pipe("sentencizer")
+
+    def __init__(self):
+        pass
 
     def clean_text(self, text: str) -> str:
         """Basic text cleaning."""
@@ -24,14 +16,17 @@ class TextPreprocessor:
 
     def get_sentences(self, text: str) -> list[str]:
         """Split text into sentences."""
-        doc = self.nlp(text)
-        return [sent.text.strip() for sent in doc.sents if sent.text.strip()]
+        parts = re.split(r'(?<=[.!?])\s+|\n+', text)
+        return [part.strip() for part in parts if part.strip()]
 
     def lemmatize_remove_stopwords(self, text: str) -> str:
         """
-        Returns a string of joined lemmas, removing stopwords and punctuation.
-        Useful for raw comparison, though Semantic Models often prefer full context.
+        Lightweight fallback normalization without external NLP models.
         """
-        doc = self.nlp(text)
-        tokens = [token.lemma_ for token in doc if not token.is_stop and not token.is_punct]
-        return " ".join(tokens)
+        tokens = re.findall(r"\b[a-zA-Z]+\b", text.lower())
+        stopwords = {
+            "a", "an", "and", "are", "as", "at", "be", "by", "for", "from",
+            "in", "is", "it", "of", "on", "or", "that", "the", "to", "was",
+            "were", "will", "with",
+        }
+        return " ".join(token for token in tokens if token not in stopwords)
