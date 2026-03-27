@@ -15,7 +15,7 @@ Use these settings in Streamlit Cloud:
 
 - Repository root: `Exam_evaluatornlp`
 - Main file path: `streamlit_app.py`
-- Python version: `3.11` via `runtime.txt`
+- Python version: `3.10` via `runtime.txt`
 - Dependencies file: `requirements.txt`
 
 Notes:
