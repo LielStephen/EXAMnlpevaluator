@@ -3,6 +3,4 @@ streamlit>=1.33,<2
 torch>=2.2,<3
 transformers>=4.39,<5
 sentence-transformers>=2.6,<4
-opencv-python-headless>=4.9,<5
-numpy>=1.26,<3
 pillow>=10,<12

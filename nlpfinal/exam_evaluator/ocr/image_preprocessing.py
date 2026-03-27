@@ -1,42 +1,25 @@
-import cv2
-import numpy as np
-from PIL import Image
+from PIL import Image, ImageFilter, ImageOps
+
 
 class ImagePreprocessor:
     """
-    Handles standard image preprocessing tasks to improve OCR accuracy
-    for handwritten text.
+    Handles lightweight image preprocessing tasks to improve OCR accuracy
+    without requiring OpenCV on hosted deployments.
     """
 
     @staticmethod
     def preprocess_image(pil_image: Image.Image) -> Image.Image:
         """
-        Convert PIL image to CV2, apply grayscale, denoising, and thresholding,
-        then convert back to PIL.
+        Convert the image to grayscale, improve contrast, reduce small noise,
+        and apply a simple threshold using Pillow only.
         """
         if pil_image.mode != "RGB":
             pil_image = pil_image.convert("RGB")
 
-        # Convert PIL to OpenCV format (RGB -> BGR)
-        image_cv = cv2.cvtColor(np.array(pil_image), cv2.COLOR_RGB2BGR)
+        gray = ImageOps.grayscale(pil_image)
+        contrasted = ImageOps.autocontrast(gray)
+        denoised = contrasted.filter(ImageFilter.MedianFilter(size=3))
 
-        # 1. Grayscale
-        gray = cv2.cvtColor(image_cv, cv2.COLOR_BGR2GRAY)
-
-        # 2. Noise Reduction (Gaussian Blur)
-        blurred = cv2.GaussianBlur(gray, (5, 5), 0)
-
-        # 3. Adaptive Thresholding (Binarization)
-        # Useful for varying lighting conditions in photos of paper
-        thresh = cv2.adaptiveThreshold(
-            blurred, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, 
-            cv2.THRESH_BINARY, 11, 2
-        )
-
-        # 4. Denoise
-        denoised = cv2.fastNlMeansDenoising(thresh, h=10, searchWindowSize=21, templateWindowSize=7)
-
-        # Convert back to PIL Image (Grayscale)
-        processed_pil = Image.fromarray(denoised)
-        
-        return processed_pil
+        threshold = 160
+        binary = denoised.point(lambda px: 255 if px > threshold else 0, mode="L")
+        return binary

@@ -1,13 +1,6 @@
 import streamlit as st
 from PIL import Image
 
-from ocr.image_preprocessing import ImagePreprocessor
-from ocr.ocr_engine import TrOCREngine
-from nlp.embeddings import EmbeddingModel
-from nlp.evaluator import AutoGrader
-from nlp.preprocessing import TextPreprocessor
-from nlp.relevance import RelevanceFilter
-
 
 st.set_page_config(
     page_title="Handwritten Exam Evaluator",
@@ -18,16 +11,29 @@ st.set_page_config(
 
 @st.cache_resource
 def load_ocr_engine():
+    from ocr.ocr_engine import TrOCREngine
+
     return TrOCREngine()
 
 
 @st.cache_resource
 def load_nlp_components():
+    from nlp.embeddings import EmbeddingModel
+    from nlp.evaluator import AutoGrader
+    from nlp.preprocessing import TextPreprocessor
+    from nlp.relevance import RelevanceFilter
+
     embed_model = EmbeddingModel()
     text_prep = TextPreprocessor()
     relevance_filter = RelevanceFilter(embed_model)
     grader = AutoGrader(embed_model)
     return text_prep, relevance_filter, grader
+
+
+def preprocess_uploaded_image(student_img: Image.Image) -> Image.Image:
+    from ocr.image_preprocessing import ImagePreprocessor
+
+    return ImagePreprocessor.preprocess_image(student_img)
 
 
 st.sidebar.title("Evaluation Config")
@@ -48,10 +54,11 @@ st.sidebar.info(
     - Device: Local CPU/GPU
     """
 )
-st.sidebar.caption("Models load on the first evaluation and stay cached for later runs.")
+st.sidebar.caption("The page should open immediately. Models load only when you click Evaluate.")
 
 st.title("Handwritten Exam Evaluator")
 st.markdown("### AI-Assisted Descriptive Answer Grading")
+st.caption("Built to stay lightweight on app startup for Streamlit Cloud deployment.")
 
 col1, col2 = st.columns([1, 1])
 
@@ -88,14 +95,14 @@ if st.button("Evaluate Answer", type="primary"):
                 text_prep, relevance_filter, grader = load_nlp_components()
 
             with st.status("Processing Image...", expanded=True) as status:
-                st.write("Preprocessing image (denoising/thresholding)...")
-                processed_img = ImagePreprocessor.preprocess_image(student_img)
+                st.write("Preprocessing image...")
+                processed_img = preprocess_uploaded_image(student_img)
 
-                st.write("Running TrOCR (Handwritten Text Recognition)...")
+                st.write("Running handwritten OCR...")
                 extracted_text = ocr_engine.extract_text(processed_img)
                 status.update(label="OCR Complete", state="complete", expanded=False)
 
-            with st.spinner("Analyzing Semantics..."):
+            with st.spinner("Analyzing semantics..."):
                 clean_student_text = text_prep.clean_text(extracted_text)
                 clean_model_text = text_prep.clean_text(model_answer_text)
                 student_sentences = text_prep.get_sentences(clean_student_text)
@@ -152,7 +159,7 @@ if st.button("Evaluate Answer", type="primary"):
                 st.info(f"**Verdict:** {result['reason']}")
 
         except Exception as exc:
-            st.error(f"An error occurred during evaluation: {exc}")
+            st.error("Evaluation could not complete.")
             st.exception(exc)
 
 
