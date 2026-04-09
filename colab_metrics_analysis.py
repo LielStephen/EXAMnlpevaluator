@@ -62,11 +62,11 @@ def summarize_metrics(results_df: pd.DataFrame) -> pd.DataFrame:
         if not benchmark_df.empty:
             benchmark_df["actual_marks"] = benchmark_df["actual_marks"].astype(float)
             mae = mean_absolute_error(benchmark_df["actual_marks"], benchmark_df["predicted_marks"])
-            rmse = mean_squared_error(
+            mse = mean_squared_error(
                 benchmark_df["actual_marks"],
                 benchmark_df["predicted_marks"],
-                squared=False,
             )
+            rmse = mse ** 0.5
             corr = benchmark_df["actual_marks"].corr(benchmark_df["predicted_marks"])
             within_1 = (
                 (benchmark_df["actual_marks"] - benchmark_df["predicted_marks"]).abs() <= 1
