@@ -80,6 +80,32 @@ streamlit run streamlit_app.py
 - Improvement feedback
 - Keyword highlighting
 
+## UI Screenshots
+
+Project screenshots should be stored in `assets/screenshots/` using:
+
+- `step1-upload-image.png`
+- `step2-extract-data.png`
+- `step3-compare-results.png`
+
+These correspond to:
+
+1. Step 1: Upload answer sheet image
+2. Step 2: Extract OCR data and provide reference answer
+3. Step 3: Compare extracted answer with reference answer and view results
+
+### Step 1: Upload Answer Sheet Image
+
+![Step 1 Upload Answer Sheet Image](assets/screenshots/step1-upload-image.png)
+
+### Step 2: Extract OCR Data and Provide Reference Answer
+
+![Step 2 Extract OCR Data and Provide Reference Answer](assets/screenshots/step2-extract-data.png)
+
+### Step 3: Compare Extracted Answer with Reference Answer and View Results
+
+![Step 3 Compare Extracted Answer with Reference Answer and View Results](assets/screenshots/step3-compare-results.png)
+
 ## Notes
 
 - The app is designed for CPU-only systems.
