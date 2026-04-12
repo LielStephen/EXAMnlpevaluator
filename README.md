@@ -80,31 +80,27 @@ streamlit run streamlit_app.py
 - Improvement feedback
 - Keyword highlighting
 
-## UI Screenshots
+## Workflow Screens
 
-Project screenshots should be stored in `assets/screenshots/` using:
-
-- `step1-upload-image.png`
-- `step2-extract-data.png`
-- `step3-compare-results.png`
-
-These correspond to:
-
-1. Step 1: Upload answer sheet image
-2. Step 2: Extract OCR data and provide reference answer
-3. Step 3: Compare extracted answer with reference answer and view results
+The following screenshots explain the full answer-evaluation workflow clearly for demonstration and mentor review.
 
 ### Step 1: Upload Answer Sheet Image
 
-![Step 1 Upload Answer Sheet Image](assets/screenshots/step1-upload-image.png)
+In this step, the user uploads the handwritten or printed answer-sheet image into the Streamlit application.
 
-### Step 2: Extract OCR Data and Provide Reference Answer
+![Step 1 Upload Answer Sheet Image](assets/workflow-screens/step1-upload-answer-image.png)
 
-![Step 2 Extract OCR Data and Provide Reference Answer](assets/screenshots/step2-extract-data.png)
+### Step 2: OCR Extraction and Editable Student Text
 
-### Step 3: Compare Extracted Answer with Reference Answer and View Results
+In this step, the system extracts the student answer using OCR and displays the text inside an editable textbox so that OCR mistakes can be corrected manually before evaluation.
 
-![Step 3 Compare Extracted Answer with Reference Answer and View Results](assets/screenshots/step3-compare-results.png)
+![Step 2 OCR Extracted Text](assets/workflow-screens/step2-ocr-extracted-text.png)
+
+### Step 3: Compare with Reference Answer and Generate Score
+
+In this step, the system compares the extracted student answer with the pasted reference answer and produces the final score, keyword analysis, and feedback.
+
+![Step 3 Evaluation Results](assets/workflow-screens/step3-evaluation-results.png)
 
 ## Notes
 
